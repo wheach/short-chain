@@ -1,0 +1,83 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: shortchain
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/short_chain?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: "1234"
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      # password: your_redis_password   # 如果 Redis 有密码就取消注释
+      database: 0
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+  cloud:
+    nacos:
+      server-addr: localhost:8848   # ⚠️ 填 8848，不是 8080！
+      config:
+        import-check:
+          enabled: false
+    sentinel:
+      transport:
+        dashboard: localhost:8090   # Dashboard 地址（可选，先不装也行）
+        port: 8719
+      eager: true
+      datasource: # ← 新增这段
+        flow-rule:
+          nacos:
+            server-addr: localhost:8848
+            data-id: shortchain-flow-rules
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow
+        degrade-rule:
+          nacos:
+            server-addr: localhost:8848
+            data-id: shortchain-degrade-rules
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: degrade
+        param-flow-rule:
+          nacos:
+            server-addr: localhost:8848
+            data-id: shortchain-param-flow-rules   # 热点参数限流规则
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: param-flow                  # param-flow=热点参数限流
+
+# MyBatis-Plus 配置（顶层，与 spring 平级）
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   # 开发期打印 SQL，上线删掉
+  global-config:
+    banner: false
+    db-config:
+      id-type: input    # 主键手动输入（雪花 ID 代码生成）
+
+# 自定义业务配置
+shortchain:
+  domain: http://localhost:8080
+  # 短链域名
+  snowflake:
+    worker-id: 1                    # 机器 ID（多实例需不同）
+    datacenter-id: 1                # 数据中心 ID
+  bloom:
+    expected-insertions: 100000000  # 布隆预期数据量 1 亿
+    false-positive-rate: 0.01       # 误判率 1%
+
+
