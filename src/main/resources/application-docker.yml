@@ -1,5 +1,7 @@
 # Docker 中间件专用配置（端口错开后的宿主端口）
 # 启动方式：IDEA 的 Active profiles 填 docker，或加参数 --spring.profiles.active=docker
+# 注意：数据库账号密码不在本文件，需与 local 一起激活
+#       Active profiles 填：local,docker
 spring:
   datasource:
     url: jdbc:mysql://localhost:3307/short_chain?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true

@@ -1,0 +1,14 @@
+# ============================================================
+# 本地开发配置模板
+#
+# 用法：
+#   1. 复制本文件并去掉 .example 后缀 -> application-local.yml
+#   2. 填入你自己的数据库账号密码
+#   3. IDEA 的 Active profiles 填 local
+#
+# application-local.yml 已被 .gitignore 排除，不会提交到仓库
+# ============================================================
+spring:
+  datasource:
+    username: your_username
+    password: your_password
