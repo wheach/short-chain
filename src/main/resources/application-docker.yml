@@ -1,0 +1,24 @@
+# Docker 中间件专用配置（端口错开后的宿主端口）
+# 启动方式：IDEA 的 Active profiles 填 docker，或加参数 --spring.profiles.active=docker
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3307/short_chain?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+  data:
+    redis:
+      port: 6380
+  cloud:
+    nacos:
+      server-addr: localhost:8849
+    sentinel:
+      transport:
+        dashboard: localhost:8858
+      datasource:
+        flow-rule:
+          nacos:
+            server-addr: localhost:8849
+        degrade-rule:
+          nacos:
+            server-addr: localhost:8849
+        param-flow-rule:
+          nacos:
+            server-addr: localhost:8849
