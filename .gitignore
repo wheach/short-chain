@@ -1,0 +1,28 @@
+# ---- Maven 构建产物 ----
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# ---- IntelliJ IDEA ----
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# ---- Eclipse / VSCode ----
+.classpath
+.project
+.settings/
+.vscode/
+
+# ---- 日志 ----
+logs/
+*.log
+
+# ---- 操作系统 ----
+.DS_Store
+Thumbs.db
+
+# ---- 本地私有配置（敏感信息，不要提交）----
+application-local.yml
+*.local
